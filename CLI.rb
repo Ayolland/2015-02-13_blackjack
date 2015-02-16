@@ -14,12 +14,21 @@ class Driver
   def initialize
     @player = Player.new(self.intro)
     @dealer = Dealer.new({:min => 5})
+    load_qualities if @player.id != nil
+    binding.pry
     @printer = []
     @printer << "Let's play BlackJack!"
     @printer << "No Hole card, 5 chip minimum bid."
     @printer << "You have #{@player.chips} chips."
     printy
     self.run
+  end
+  
+  def load_qualities
+    array = DATABASE.execute("SELECT * FROM Qualities")
+    quals = array.each_with_object({}){|entry,hash| hash[entry["id"]] = entry["name"]}
+    join_tbl = DATABASE.execute("SELECT quality_id FROM UserQualities WHERE user_id = #{@player.id}")
+    join_tbl.each {|entry| @player.qualities << quals[entry["quality_id"]]}
   end
   
   def printy
@@ -137,13 +146,19 @@ class Driver
       break if @bet <= @player.chips
       puts "You don't have that many chips!"
     end
-    @bet = @dealer.min if @bet < @dealer.min
+    if @bet < @dealer.min
+      @bet = @dealer.min 
+      @player.qualities << "cheap"
+      @printer << "It's a minimum bid of #{@dealer.min}."
+    end
     @player.chips -= @bet
-    puts "You bid #{@bet} chips."
+    @printer << "You bid #{@bet} chips."
+    printy
   end
   
   def deal_player
     more_cards
+    @printer << "'One card for #{@player.gender}. #{@player.qualities.sample}...'"
     @printer << "Dealer deals you a #{@dealer.deal1(@player).to_s}"
   end
   
@@ -213,6 +228,10 @@ class Driver
   end
   
   def double
+    if @player.hand_total > 12
+      @player.qualities << "reckless"
+      @printer << "Whatever you say."
+    end
     @printer << "You double your bet, and take one more card."
     @player.chips -= @bet
     @bet = (@bet * 2)
@@ -238,6 +257,7 @@ class Driver
       outcome = :player
     elsif @player.blackjack? && !@dealer.blackjack?
       outcome = :blackjack
+      @player.qualities << "lucky"
     elsif push?
       outcome = :push
     else
