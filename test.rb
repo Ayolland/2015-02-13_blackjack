@@ -1,5 +1,6 @@
 require 'pry'
 require 'card_deck'
+require 'sqlite3'
 include CardDeck
 require_relative 'shoe'
 require_relative 'card_values'

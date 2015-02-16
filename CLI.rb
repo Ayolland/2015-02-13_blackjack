@@ -13,12 +13,18 @@ class Driver
   
   def initialize
     @player = Player.new(self.intro)
-    
     @dealer = Dealer.new({:min => 5})
-    puts "Let's play BlackJack!"
-    puts "No Hole card, 5 chip minimum bid."
-    puts "You have #{@player.chips} chips."
+    @printer = []
+    @printer << "Let's play BlackJack!"
+    @printer << "No Hole card, 5 chip minimum bid."
+    @printer << "You have #{@player.chips} chips."
+    printy
     self.run
+  end
+  
+  def printy
+    @printer.each {|string| puts string}
+    @printer = []
   end
   
   def intro
@@ -40,8 +46,7 @@ class Driver
     username = gets.chomp
     puts "Enter password:"
     password = gets.chomp
-    sql_str = "SELECT * FROM Users WHERE username = '#{username}' AND password = '#{password}'"
-    player = DATABASE.execute(sql_str)[0]
+    player = load_player_as_hash(username,password)
     if player == nil
       puts "Username and password did not match."
       puts "(Enter 1 to try again and anything else to create a new user)"
@@ -97,6 +102,11 @@ class Driver
     input == 1 ? insert_user(options) : new_user
   end
   
+  def load_player_as_hash(username,password)
+    sql_str = "SELECT * FROM Users WHERE username = '#{username}' AND password = '#{password}'"
+    player = DATABASE.execute(sql_str)[0]
+  end
+  
   def insert_user(hash)
     key_str = hash.keys.join(", ")
     val_arr = []
@@ -134,28 +144,28 @@ class Driver
   
   def deal_player
     more_cards
-    puts "Dealer deals you a #{@dealer.deal1(@player).to_s}"
+    @printer << "Dealer deals you a #{@dealer.deal1(@player).to_s}"
   end
   
   def deal_dealer
     more_cards
-    puts "Dealer draws a #{@dealer.deal1(@dealer).to_s}"
+    @printer << "Dealer draws a #{@dealer.deal1(@dealer).to_s}"
   end
   
   def more_cards
     if @dealer.shoe.cards == []
-      puts "Getting a new shoe of cards..."
+      @printer << "Getting a new shoe of cards..."
       @dealer.new_shoe
     end
   end
   
   def pl_total
-    puts "You have #{@player.hand_total}" if !@player.blackjack?
-    puts "BlackJack!" if @player.blackjack?
+    @printer << "You have #{@player.hand_total}" if !@player.blackjack?
+    @printer << "BlackJack!" if @player.blackjack?
   end
   
   def de_total
-    puts "Dealer has #{@dealer.hand_total}"
+    @printer << "Dealer has #{@dealer.hand_total}"
   end
   
   def pl_choice
@@ -174,13 +184,13 @@ class Driver
       self.deal_dealer
       self.de_total
       if @dealer.bust?
-        puts "Dealer busts!"
+        @printer << "Dealer busts!"
         @dealer.stop = :bust
       elsif @dealer.blackjack?
-        puts "Dealer has BlackJack."
+        @printer << "Dealer has BlackJack."
         @dealer.stop = :bjack
       elsif @dealer.hand_total > 17
-        puts "Dealer stands."
+        @printer << "Dealer stands."
         @dealer.stop = :stand
       end
       break if @dealer.stop != nil
@@ -188,29 +198,29 @@ class Driver
   end
   
   def hit
-    puts "You hit."
+    @printer << "You hit."
     self.deal_player
     self.pl_total
     if @player.bust?
-      puts "You bust!"
+      @printer << "You bust!"
       @player.stop = :bust
     end
   end
   
   def stand
-    puts "You stand."
+    @printer << "You stand."
     @player.stop = :stand
   end
   
   def double
-    puts "You double your bet, and take one more card."
+    @printer << "You double your bet, and take one more card."
     @player.chips -= @bet
     @bet = (@bet * 2)
     @player.stop = :stand
     self.deal_player
     self.pl_total
     if @player.bust?
-      puts "You bust!"
+      @printer << "You bust!"
       @player.stop = :bust
     end
   end
@@ -233,21 +243,23 @@ class Driver
     else
       outcome = :dealer
     end
+    outcome
   end
   
-  def pl_win
-    puts "You win!"
-    @winnings = (@bet + @bet)
+  def payout(symbol)
+    p = {player: (@bet * 2),
+         blackjack: (@bet * 2.5).round,
+         push: @bet,
+         dealer: 0}[symbol]
+    @player.chips += p
   end
   
-  def pl_bj
-    puts "Dealer can't beat #{@player.name}'s BlackJack. Great job."
-    @player.chips += (@bet + (@bet * 1.5).round)
-  end
-  
-  def push
-    puts "Push."
-    @player.chips += @bet
+  def message(symbol)
+    m = {player: "You win!",
+         blackjack: "Dealer can't beat that BlackJack. Nice playing.",
+         push: "Push.",
+         dealer: "Dealer wins."}[symbol]
+    @printer << m
   end
   
   def run_game
@@ -258,21 +270,19 @@ class Driver
     2.times do
       deal_player
     end
+    printy
     self.pl_total
+    printy
     loop do
       self.pl_choice
+      printy
       break if @player.stop != nil
     end
     dl_choice
-    if (@player.stop == :stand && pl_high?) || (@dealer.bust? && !@player.bust?)
-      self.pl_win
-    elsif @player.blackjack? && !@dealer.blackjack?
-      self.pl_bj
-    elsif push?
-      self.push
-    else
-      puts "Dealer wins."
-    end
+    printy
+    payout(outcome)
+    message(outcome)
+    printy
   end
   
   def run
