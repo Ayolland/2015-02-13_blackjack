@@ -1,0 +1,23 @@
+body {
+  background-color: #27760E;
+}
+
+table{
+  border-collapse: collapse;
+}
+
+td{
+  font-size: 120px;
+  height: .9em;
+  background: white;
+  line-height: 0.75;
+  vertical-align: bottom;
+}
+
+.red{
+  color: red;
+}
+
+.black{
+  color: black;
+}
