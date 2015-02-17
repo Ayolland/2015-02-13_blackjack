@@ -13,3 +13,11 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS UserQualities
                    (id INTEGER PRIMARY KEY,
                     user_id INTEGER,
                     quality_id INTEGER)")
+DATABASE.execute("CREATE TABLE IF NOT EXISTS Dealer
+                   (id INTEGER PRIMARY KEY,
+                    card TEXT)")
+DATABASE.execute("CREATE TABLE IF NOT EXISTS Player
+                   (id INTEGER PRIMARY KEY,
+                    card TEXT)")
+  
+                    

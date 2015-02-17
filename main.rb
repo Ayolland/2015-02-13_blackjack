@@ -12,9 +12,44 @@ require_relative "database/database_setup.rb"
 
 get "/test" do
   @shoe = Shoe.new
-  @test_cards =[]
-  9.times { @test_cards << @shoe.deal}
+  @hand =[]
+  9.times { @hand << @shoe.deal}
   erb :test
+end
+
+get "/" do
+  erb :login
+end
+
+post "/verify" do
+  username = params[:username]
+  password = params[:password]
+  if verify(username,password) 
+    redirect to("/test") 
+  else
+    @error = :no_user
+    erb :login
+  end
+end
+
+get "/new_user" do
+  erb :new_user
+end
+
+post "/create" do
+  hash = {}
+  hash["username"] = params[:username]
+  hash["password"] = params[:password]
+  hash["name"]     = params[:name]
+  hash["gender"]   = params[:gender]
+  hash["chips"]    = 500
+  binding.pry
+  insert_user(hash)
+  redirect to("/test")
+end
+
+get "/game/:username" do
+  
 end
 
 helpers do
@@ -39,6 +74,23 @@ helpers do
     card.red? ? "red" : "black"
   end
   
+  def verify(username,password)
+    sql_str = "SELECT * FROM Users WHERE username = '#{username}' AND password = '#{password}'"
+    DATABASE.execute(sql_str)[0] != nil
+  end
   
+  def insert_user(hash)
+    key_str = hash.keys.join(", ")
+    val_arr = []
+    hash.values.each do |value|
+      v = value
+      v = "'" + value + "'" if value.is_a?(String)
+      val_arr << v
+    end
+    val_str = val_arr.join(", ")
+    sql_str = "INSERT INTO Users (#{key_str}) VALUES (#{val_str})"
+    DATABASE.execute(sql_str)
+    hash
+  end
 
 end

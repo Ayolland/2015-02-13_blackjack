@@ -1,8 +1,6 @@
 <table>
-  <tr><% @test_cards.each do%> 
-    <% card = @test_cards.pop%>
+  <tr><% @hand.each do |card|%> 
     <td class="<%= color(card) %>"><%= unicode(card) %></td>
-    <% binding.pry%>
     <%end%>
   </tr>
 </table>

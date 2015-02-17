@@ -1,0 +1,16 @@
+<% if @error == :user_taken%>
+<p class="error">Sorry, that username is taken already.</p>
+<% elsif @error == :pass_mismatch%>
+<p class="error">Sorry, that password did not match.</p>
+<% end%>
+<p>Create a new user:</p>
+<form action="/create" method="post">
+  Username:<input type="text" name="username"><br>
+  Password:<input type="password" name="password"><br>
+  Re-Enter Password:<input type="password" name="password"><br>
+  Name:<input type="text" name="name"><br>
+  Male <input type="radio" name="gender" value="Mr"><br>
+  Female<input type="radio" name="gender" value="Ms"><br>
+  Neutral<input type="radio" name="gender" value="Mx" checked><br>
+  <input type="submit" name="create" value="Create User">
+</form>
