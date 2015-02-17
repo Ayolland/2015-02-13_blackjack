@@ -44,11 +44,12 @@ table{
 }
 
 .printer{
+  font-size: 9pts;
   background: #52BC52;
   width: 30em;
   margin-left: auto;
   margin-right: auto;
-  padding: 2em;
+  padding: 1em;
   border: 5px double #27760E;
 }
 
@@ -68,6 +69,39 @@ td.cards{
 }
 
 input{
-  font-size: 20pt;
-  width: 6em;
+  width: 15em;
+  border: 5px double #27760E;
+}
+
+.login{
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.create{
+  background: #52BC52;
+  width: 350px;
+  padding: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: right;
+}
+
+.center{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.error{
+  width: 50%;
+  font-style: italic;
+  font-weight: 600;
+  background: #52BC52;
+  padding: .5em;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }

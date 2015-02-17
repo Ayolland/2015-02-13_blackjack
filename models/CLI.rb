@@ -158,7 +158,7 @@ class Driver
   
   def deal_player
     more_cards
-    @printer << "'One card for #{@player.gender}. #{@player.qualities.sample}...'"
+    #@printer << "'One card for #{@player.gender}. #{@player.qualities.sample}...'"
     @printer << "Dealer deals you a #{@dealer.deal1(@player).to_s}"
   end
   

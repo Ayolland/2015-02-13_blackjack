@@ -1,13 +1,13 @@
-<% if @error == :no_user%>
-<p class="error">Sorry, that username and password don't match!</p>
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
 <% end%>
-<p>Login to play BlackJack:</p>
-<form action="/verify" method="post">
-  Username:<input type="text" name="username"><br>
-  Password:<input type="password" name="password">
+<h1>Login to play BlackJack:</h1>
+<form action="/verify" method="post" class="login">
+  <h2>Username:</h2><input type="text" name="username"><br>
+  <h2>Password:</h2><input type="password" name="password"><br><br>
   <input type="submit" name="login" value="Login">
 </form>
-<p>Or create a new username:</p>
-<form action="/new_user" method="get">
+<h1>Or create a new username:</h1>
+<form action="/new_user" method="post">
   <input type="submit" name="new_user" value="Create New User">
 </form>

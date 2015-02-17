@@ -19,5 +19,8 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS Dealer
 DATABASE.execute("CREATE TABLE IF NOT EXISTS Player
                    (id INTEGER PRIMARY KEY,
                     card TEXT)")
+DATABASE.execute("CREATE TABLE IF NOT EXISTS Bet
+                   (id INTEGER PRIMARY KEY,
+                    bet INTEGER)")
   
                     

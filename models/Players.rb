@@ -43,7 +43,7 @@ class Dealer
     @hand = options["hand"]
     @hand = [] if !@hand.is_a?(Array)
     @name = "Dealertron5000"
-    @min  = options["min"]
+    @min  = 5
     @stop = nil
     self.new_shoe
   end

@@ -8,9 +8,12 @@
 # Integer - between 2-11
 
 def value(card)
-  value = card.num
-  if value.is_a?(String)
-    value == "Ace" ? value = 11 : value = 10
+  suit = card.to_s.split(//).first
+  value  = card.to_s.delete(suit)
+  if value.to_i == 0
+    value == "A" ? value = 11 : value = 10
+  else
+    value = value.to_i
   end
   value
 end
