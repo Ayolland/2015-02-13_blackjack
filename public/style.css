@@ -1,23 +1,73 @@
 body {
   background-color: #27760E;
+  text-align: center;
+}
+
+h1{
+  color: white;
+  line-height: 0.5;
+  left-margin: 2;
+  right-margin:2;
+}
+
+h2{
+  color: #6FD16F;
+  line-height: 0.5;
+}
+
+h3{
+  background: #52BC52;
+  padding: .2em;
+  border: 3px double white;
+}
+
+strong{
+  color: white;
+  text-align: justify;
+  font-size: 20pt;
+  vertical-align: -10%;
+}
+
+
+.player{
+}
+
+.player td{
+  width: 12em;
 }
 
 table{
+  align: center;
   border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-td{
-  font-size: 120px;
+.printer{
+  background: #52BC52;
+  width: 30em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2em;
+  border: 5px double #27760E;
+}
+
+td.cards{
+  font-size: 100px;
   height: .9em;
   background: white;
   line-height: 0.75;
   vertical-align: bottom;
 }
-
 .red{
   color: red;
 }
 
 .black{
   color: black;
+}
+
+input{
+  font-size: 20pt;
+  width: 6em;
 }

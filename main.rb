@@ -11,9 +11,7 @@ DATABASE = SQLite3::Database.new('database/database.db')
 require_relative "database/database_setup.rb"
 
 get "/test" do
-  @shoe = Shoe.new
-  @hand =[]
-  9.times { @hand << @shoe.deal}
+  test_hand
   erb :test
 end
 
@@ -24,7 +22,7 @@ end
 post "/verify" do
   username = params[:username]
   password = params[:password]
-  if verify(username,password) 
+  if verify?(username,password) 
     redirect to("/test") 
   else
     @error = :no_user
@@ -52,7 +50,22 @@ get "/game/:username" do
   
 end
 
+get "/style_test" do
+  hash = load("cassiegurl")
+  hash["hand"] = test_hand
+  @player = Player.new(hash)
+  @dealer = Dealer.new({"hand" => test_hand, "min" => 5})
+  erb :blackjack
+end
+
 helpers do
+  
+  def test_hand
+    @shoe = Shoe.new
+    hand =[]
+    9.times { hand << @shoe.deal}
+    hand
+  end
   
   def unicode(card)
     suit_code = {"\u2660"=>"A",
@@ -74,9 +87,14 @@ helpers do
     card.red? ? "red" : "black"
   end
   
-  def verify(username,password)
+  def verify?(username,password)
     sql_str = "SELECT * FROM Users WHERE username = '#{username}' AND password = '#{password}'"
     DATABASE.execute(sql_str)[0] != nil
+  end
+  
+  def load(username)
+    sql_str = "SELECT * FROM Users WHERE username = '#{username}'"
+    DATABASE.execute(sql_str)[0]
   end
   
   def insert_user(hash)

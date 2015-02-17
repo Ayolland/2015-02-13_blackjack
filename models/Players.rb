@@ -40,10 +40,10 @@ class Dealer
   include HandOperations
   
   def initialize(options)
-    @hand = options[:hand]
+    @hand = options["hand"]
     @hand = [] if !@hand.is_a?(Array)
     @name = "Dealertron5000"
-    @min  = options[:min]
+    @min  = options["min"]
     @stop = nil
     self.new_shoe
   end

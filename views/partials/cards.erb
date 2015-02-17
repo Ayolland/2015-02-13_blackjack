@@ -1,0 +1,6 @@
+<table>
+  <tr><% @hand.each do |card|%> 
+    <td class="cards <%= color(card) %>"><%= unicode(card) %></td>
+    <%end%>
+  </tr>
+</table>
