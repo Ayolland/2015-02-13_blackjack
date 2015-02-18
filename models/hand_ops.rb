@@ -16,15 +16,13 @@ module HandOperations
 
   def hand_total
     total = 0
-    @hand.each do |card|
-      v = value(card)
-      if v != 11
-        total += v
-      else
-        total < 11 ? total += 11 : total += 1
-      end
-    end
+    @hand.each {|card| total += value(card)}
+    total_aces.times {total -= 10 if total > 21} if total_aces != 0
     total
+  end
+  
+  def total_aces
+    @hand.each_with_object([]){|card,array| array << card if value(card) == 11}.length
   end
   
 end
