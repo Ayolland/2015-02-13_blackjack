@@ -3,8 +3,8 @@ module LoadSaveGamePlayers
   #commenting this out becasue I believe this method is abandoned.... (correction, it's not...) #TODO refactor this crap...
   
   def load_pl_de
-    @dealer = Dealer.new({})
-    @player = Player.new(load(@username))
+    session[:dealer] = Dealer.new({})
+    session[:player] = Player.new(load(session[:username]))
   end
   
   # save_game_state
@@ -23,14 +23,14 @@ module LoadSaveGamePlayers
     DATABASE.execute('DELETE FROM Dealer')
     DATABASE.execute('DELETE FROM Player')
     DATABASE.execute('DELETE FROM Bet')
-    @dealer.hand.each do |card|
+    session[:dealer].hand.each do |card|
       DATABASE.execute("INSERT INTO Dealer (card) VALUES ('#{card.to_s}')")
     end
-    @player.hand.each do |card|
+    session[:player].hand.each do |card|
       DATABASE.execute("INSERT INTO Player (card) VALUES ('#{card.to_s}')")
     end
-    DATABASE.execute ("INSERT INTO Bet (bet) VALUES (#{@bet})")
-    DATABASE.execute ("UPDATE Users SET chips=#{@player.chips} WHERE username = '#{@username}'")    
+    DATABASE.execute ("INSERT INTO Bet (bet) VALUES (#{session[:bet]})")
+    DATABASE.execute ("UPDATE Users SET chips=#{session[:player].chips} WHERE username = '#{session[:username]}'")    
   end
   
   # load_game_state

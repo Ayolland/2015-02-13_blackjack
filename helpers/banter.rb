@@ -8,7 +8,7 @@ module DealerBanter
       @printer << "Make your call."
     elsif @action == :end
       @printer << "Congratulations!" if outcome == :player
-      @printer << "That's the way it goes." if @player.bust?
+      @printer << "That's the way it goes." if session[:player].bust?
     end 
   end
   

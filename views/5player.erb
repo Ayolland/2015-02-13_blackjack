@@ -5,6 +5,7 @@
 <p class="printer">
 <% @printer.each {|string|%><%=string%><br><%}%>
 </p>
+
 <table>
 <%= erb "partials/#{@action.to_s}".to_sym%>
 </table>
@@ -17,6 +18,7 @@
     <td><h3> Total Chips - <strong>&#10026;<%= session[:player].chips %></strong> </h3></td>
   </tr>
 </table>
+
 <% @hand = session[:player].hand %>
 <%= erb "partials/cards".to_sym %>
 <h2><%= session[:player].name %> Total: <%= session[:player].hand_total %></h2>

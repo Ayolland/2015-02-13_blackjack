@@ -12,9 +12,9 @@ module BlackJackRules
   def new_game
     @printer = []
     @action = :bet
-    @dealer.hand = []
-    @player.hand = []
-    @bet = 0
+    session[:dealer].hand = []
+    session[:player].hand = []
+    session[:bet] = 0
     chat
   end
   
@@ -33,7 +33,7 @@ module BlackJackRules
     de_total
     2.times {deal_player}
     pl_total
-    if @player.hand_total == 21
+    if session[:player].hand_total == 21
       @action = :end
       run_dealer
     else
@@ -56,7 +56,7 @@ module BlackJackRules
     @printer << "You Hit."
     deal_player
     pl_total
-    if @player.bust? || @player.hand_total == 21
+    if session[:player].bust? || session[:player].hand_total == 21
       @action = :end
       run_dealer
     else
@@ -95,8 +95,8 @@ module BlackJackRules
   def double
     @printer = []
     @printer << "You double your bet and take one more card."
-    @player.chips -= @bet
-    @bet += @bet
+    session[:player].chips -= session[:bet]
+    session[:bet] += session[:bet]
     deal_player
     pl_total
     @action = :end
@@ -117,7 +117,7 @@ module BlackJackRules
     loop do
       deal_dealer
       de_total
-      break if @dealer.hand_total >=17
+      break if session[:dealer].hand_total >=17
     end
     win_payout(outcome)
     win_message(outcome)
@@ -130,7 +130,7 @@ module BlackJackRules
   # Boolean
   
   def pl_high?
-    @player.hand_total > @dealer.hand_total
+    session[:player].hand_total > session[:dealer].hand_total
   end
   
   # push?
@@ -140,7 +140,7 @@ module BlackJackRules
   # Boolean
   
   def push?
-    (@player.hand_total == @dealer.hand_total) && !( !@player.blackjack? && @dealer.blackjack? )
+    (session[:player].hand_total == session[:dealer].hand_total) && !( !session[:player].blackjack? && session[:dealer].blackjack? )
   end
   
   # outcome
@@ -150,11 +150,11 @@ module BlackJackRules
   # Symbol
   
   def outcome
-    if (pl_high? || @dealer.bust?) && !@player.bust?
+    if (pl_high? || session[:dealer].bust?) && !session[:player].bust?
       outcome = :player
-    elsif @player.blackjack? && !@dealer.blackjack?
+    elsif session[:player].blackjack? && !session[:dealer].blackjack?
       outcome = :blackjack
-      @player.qualities << "lucky"
+      session[:player].qualities << "lucky"
     elsif push?
       outcome = :push
     else
@@ -176,12 +176,12 @@ module BlackJackRules
   # pays player, and adds a message to the printer
   
   def win_payout(symbol)
-    p = {player: (@bet * 2),
-         blackjack: (@bet * 2.5).round,
-         push: @bet,
+    p = {player: (session[:bet] * 2),
+         blackjack: (session[:bet] * 2.5).round,
+         push: session[:bet],
          dealer: 0}[symbol]
-    @printer << "#{p} Chips for #{@player.gender}. #{@player.name}" if p != 0
-    @player.chips += p
+    @printer << "#{p} Chips for #{session[:player].gender}. #{session[:player].name}" if p != 0
+    session[:player].chips += p
     nil
   end
   
@@ -216,7 +216,7 @@ module BlackJackRules
   # Deals a card to the player and adds a message to the printer
   
   def deal_player
-    @printer << "Dealer deals you a #{@dealer.deal1(@player).to_s}"
+    @printer << "Dealer deals you a #{session[:dealer].deal1(session[:player]).to_s}"
     nil
   end
   
@@ -230,7 +230,7 @@ module BlackJackRules
   # Deals a card to the player and adds a message to the printer
   
   def deal_dealer
-    @printer << "Dealer draws a #{@dealer.deal1(@dealer).to_s}"
+    @printer << "Dealer draws a #{session[:dealer].deal1(session[:dealer]).to_s}"
     nil
   end
   
@@ -244,9 +244,9 @@ module BlackJackRules
   # adds a message to the printer
   
   def pl_total
-    @printer << "You have #{@player.hand_total}" if !@player.blackjack?
-    @printer << "You bust." if @player.bust?
-    @printer << "BlackJack!" if @player.blackjack?
+    @printer << "You have #{session[:player].hand_total}" if !session[:player].blackjack?
+    @printer << "You bust." if session[:player].bust?
+    @printer << "BlackJack!" if session[:player].blackjack?
     nil
   end
   
@@ -260,9 +260,9 @@ module BlackJackRules
   # adds a message to the printer
   
   def de_total
-    @printer << "Dealer has #{@dealer.hand_total}" if !@dealer.blackjack?
-    @printer << "Dealer busts!" if @dealer.bust?
-    @printer << "Dealer has BlackJack." if @dealer.blackjack?
+    @printer << "Dealer has #{session[:dealer].hand_total}" if !session[:dealer].blackjack?
+    @printer << "Dealer busts!" if session[:dealer].bust?
+    @printer << "Dealer has BlackJack." if session[:dealer].blackjack?
     nil
   end
   

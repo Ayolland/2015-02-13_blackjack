@@ -14,9 +14,10 @@ require_relative 'helpers/cards'
 DATABASE = SQLite3::Database.new('database/database.db')
 require_relative "database/database_setup.rb"
 
+enable :sessions
+
 get "/test" do
   @hand = test_hand
-  erb :test
 end
 
 get "/" do
@@ -27,8 +28,8 @@ post "/verify" do
   username = params[:username].downcase
   password = params[:password]
   if verify?(username,password) 
-    @player = Player.new(load(username))
-    @username = username
+    session[:player] = Player.new(load(username))
+    session[:username] = username
     erb :landing
   else
     @error = "Sorry, that username and password don't match!"
@@ -51,8 +52,8 @@ post "/create" do
   exists = load(hash["username"])
   if exists == nil && hash["password"] == hash["re_enter"]
     insert_user(hash)
-    @player = Player.new(load(hash["username"]))
-    @username = hash["username"]
+    session[:player] = Player.new(load(hash["username"]))
+    session[:username] = hash["username"]
     erb :landing
   elsif exists != nil
     @error = "Sorry, that username is taken already."
@@ -66,51 +67,55 @@ end
 get "/style_test" do
   hash = load("cassiegurl")
   hash["hand"] = test_hand
-  @player = Player.new(hash)
-  @dealer = Dealer.new({"hand" => test_hand, "min" => 5})
-  @bet = 10
+  session[:player] = Player.new(hash)
+  session[:dealer] = Dealer.new({"hand" => test_hand, "min" => 5})
+  @hand = test_hand
+  @action = :choice
+  session[:bet] = 10
+  @printer =["Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."]
+  erb :test
   erb :blackjack
 end
 
 post "/new_game/:username" do
-  @username = params[:username]
+  session[:username] = params[:username]
   load_pl_de
   new_game
   erb :blackjack
 end
 
 post "/first_deal/:username" do
-  @username = params[:username]
-  @bet = params[:bet].to_i
+  session[:username] = params[:username]
+  session[:bet] = params[:bet].to_i
   load_pl_de
-  @player.chips -= @bet
+  session[:player].chips -= session[:bet]
   first_deal
   save_game_state
   erb :blackjack
 end
 
 post "/hit/:username" do
-  @username = params[:username]
+  session[:username] = params[:username]
   load_pl_de
-  @dealer.hand, @player.hand, @bet = load_game_state
+  session[:dealer].hand, session[:player].hand, session[:bet] = load_game_state
   hit
   save_game_state
   erb :blackjack
 end
 
 post "/stand/:username" do
-  @username = params[:username]
+  session[:username] = params[:username]
   load_pl_de
-  @dealer.hand, @player.hand, @bet = load_game_state
+  session[:dealer].hand, session[:player].hand, session[:bet] = load_game_state
   stand
   save_game_state
   erb :blackjack
 end
 
 post "/double/:username" do
-  @username = params[:username]
+  session[:username] = params[:username]
   load_pl_de
-  @dealer.hand, @player.hand, @bet = load_game_state
+  session[:dealer].hand, session[:player].hand, session[:bet] = load_game_state
   double
   save_game_state
   erb :blackjack

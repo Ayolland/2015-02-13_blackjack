@@ -12,14 +12,14 @@ require_relative "../database/database_setup.rb"
 class Driver
   
   def initialize
-    @player = Player.new(self.intro)
-    @dealer = Dealer.new({:min => 5})
-    load_qualities if @player.id != nil
+    session[:player] = Player.new(self.intro)
+    session[:dealer] = Dealer.new({:min => 5})
+    load_qualities if session[:player].id != nil
     binding.pry
     @printer = []
     @printer << "Let's play BlackJack!"
     @printer << "No Hole card, 5 chip minimum bid."
-    @printer << "You have #{@player.chips} chips."
+    @printer << "You have #{session[:player].chips} chips."
     printy
     self.run
   end
@@ -27,8 +27,8 @@ class Driver
   def load_qualities
     array = DATABASE.execute("SELECT * FROM Qualities")
     quals = array.each_with_object({}){|entry,hash| hash[entry["id"]] = entry["name"]}
-    join_tbl = DATABASE.execute("SELECT quality_id FROM UserQualities WHERE user_id = #{@player.id}")
-    join_tbl.each {|entry| @player.qualities << quals[entry["quality_id"]]}
+    join_tbl = DATABASE.execute("SELECT quality_id FROM UserQualities WHERE user_id = #{session[:player].id}")
+    join_tbl.each {|entry| session[:player].qualities << quals[entry["quality_id"]]}
   end
   
   def printy
@@ -131,56 +131,56 @@ class Driver
   end
   
   def reset
-    @dealer.hand = []
-    @player.hand = []
-    @dealer.stop = nil
-    @player.stop = nil
+    session[:dealer].hand = []
+    session[:player].hand = []
+    session[:dealer].stop = nil
+    session[:player].stop = nil
   end
   
   def place_bet
     puts "Place your bet."
     loop do
       puts "(Enter how many chips you want to wager on this hand.)"
-      @bet = gets.to_i
+      session[:bet] = gets.to_i
       
-      break if @bet <= @player.chips
+      break if session[:bet] <= session[:player].chips
       puts "You don't have that many chips!"
     end
-    if @bet < @dealer.min
-      @bet = @dealer.min 
-      @player.qualities << "cheap"
-      @printer << "It's a minimum bid of #{@dealer.min}."
+    if session[:bet] < session[:dealer].min
+      session[:bet] = session[:dealer].min 
+      session[:player].qualities << "cheap"
+      @printer << "It's a minimum bid of #{session[:dealer].min}."
     end
-    @player.chips -= @bet
-    @printer << "You bid #{@bet} chips."
+    session[:player].chips -= session[:bet]
+    @printer << "You bid #{session[:bet]} chips."
     printy
   end
   
   def deal_player
     more_cards
-    #@printer << "'One card for #{@player.gender}. #{@player.qualities.sample}...'"
-    @printer << "Dealer deals you a #{@dealer.deal1(@player).to_s}"
+    #@printer << "'One card for #{session[:player].gender}. #{session[:player].qualities.sample}...'"
+    @printer << "Dealer deals you a #{session[:dealer].deal1(session[:player]).to_s}"
   end
   
   def deal_dealer
     more_cards
-    @printer << "Dealer draws a #{@dealer.deal1(@dealer).to_s}"
+    @printer << "Dealer draws a #{session[:dealer].deal1(session[:dealer]).to_s}"
   end
   
   def more_cards
-    if @dealer.shoe.cards == []
+    if session[:dealer].shoe.cards == []
       @printer << "Getting a new shoe of cards..."
-      @dealer.new_shoe
+      session[:dealer].new_shoe
     end
   end
   
   def pl_total
-    @printer << "You have #{@player.hand_total}" if !@player.blackjack?
-    @printer << "BlackJack!" if @player.blackjack?
+    @printer << "You have #{session[:player].hand_total}" if !session[:player].blackjack?
+    @printer << "BlackJack!" if session[:player].blackjack?
   end
   
   def de_total
-    @printer << "Dealer has #{@dealer.hand_total}"
+    @printer << "Dealer has #{session[:dealer].hand_total}"
   end
   
   def pl_choice
@@ -198,17 +198,17 @@ class Driver
     loop do
       self.deal_dealer
       self.de_total
-      if @dealer.bust?
+      if session[:dealer].bust?
         @printer << "Dealer busts!"
-        @dealer.stop = :bust
-      elsif @dealer.blackjack?
+        session[:dealer].stop = :bust
+      elsif session[:dealer].blackjack?
         @printer << "Dealer has BlackJack."
-        @dealer.stop = :bjack
-      elsif @dealer.hand_total > 17
+        session[:dealer].stop = :bjack
+      elsif session[:dealer].hand_total > 17
         @printer << "Dealer stands."
-        @dealer.stop = :stand
+        session[:dealer].stop = :stand
       end
-      break if @dealer.stop != nil
+      break if session[:dealer].stop != nil
     end
   end
   
@@ -216,48 +216,48 @@ class Driver
     @printer << "You hit."
     self.deal_player
     self.pl_total
-    if @player.bust?
+    if session[:player].bust?
       @printer << "You bust!"
-      @player.stop = :bust
+      session[:player].stop = :bust
     end
   end
   
   def stand
     @printer << "You stand."
-    @player.stop = :stand
+    session[:player].stop = :stand
   end
   
   def double
-    if @player.hand_total > 12
-      @player.qualities << "reckless"
+    if session[:player].hand_total > 12
+      session[:player].qualities << "reckless"
       @printer << "Whatever you say."
     end
     @printer << "You double your bet, and take one more card."
-    @player.chips -= @bet
-    @bet = (@bet * 2)
-    @player.stop = :stand
+    session[:player].chips -= session[:bet]
+    session[:bet] = (session[:bet] * 2)
+    session[:player].stop = :stand
     self.deal_player
     self.pl_total
-    if @player.bust?
+    if session[:player].bust?
       @printer << "You bust!"
-      @player.stop = :bust
+      session[:player].stop = :bust
     end
   end
   
   def pl_high?
-    @player.hand_total > @dealer.hand_total
+    session[:player].hand_total > session[:dealer].hand_total
   end
   
   def push?
-    (@player.hand_total == @dealer.hand_total) && !( !@player.blackjack? && @dealer.blackjack? )
+    (session[:player].hand_total == session[:dealer].hand_total) && !( !session[:player].blackjack? && session[:dealer].blackjack? )
   end
   
   def outcome
-    if (@player.stop == :stand && pl_high?) || (@dealer.bust? && !@player.bust?)
+    if (session[:player].stop == :stand && pl_high?) || (session[:dealer].bust? && !session[:player].bust?)
       outcome = :player
-    elsif @player.blackjack? && !@dealer.blackjack?
+    elsif session[:player].blackjack? && !session[:dealer].blackjack?
       outcome = :blackjack
-      @player.qualities << "lucky"
+      session[:player].qualities << "lucky"
     elsif push?
       outcome = :push
     else
@@ -267,11 +267,11 @@ class Driver
   end
   
   def payout(symbol)
-    p = {player: (@bet * 2),
-         blackjack: (@bet * 2.5).round,
-         push: @bet,
+    p = {player: (session[:bet] * 2),
+         blackjack: (session[:bet] * 2.5).round,
+         push: session[:bet],
          dealer: 0}[symbol]
-    @player.chips += p
+    session[:player].chips += p
   end
   
   def message(symbol)
@@ -296,7 +296,7 @@ class Driver
     loop do
       self.pl_choice
       printy
-      break if @player.stop != nil
+      break if session[:player].stop != nil
     end
     dl_choice
     printy
@@ -309,13 +309,13 @@ class Driver
     loop do
       input = nil
       self.run_game
-      puts "You have #{@player.chips}"
+      puts "You have #{session[:player].chips}"
       puts "(Enter 1 to leave the table, anything else to play again.)"
       input = gets.to_i
       break if input == 1
     end
-    @player.save
-    puts "You ended with #{@player.chips} chips."
+    session[:player].save
+    puts "You ended with #{session[:player].chips} chips."
   end
 
 end
