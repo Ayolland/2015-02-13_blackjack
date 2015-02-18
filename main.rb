@@ -24,7 +24,7 @@ get "/" do
 end
 
 post "/verify" do
-  username = params[:username]
+  username = params[:username].downcase
   password = params[:password]
   if verify?(username,password) 
     @player = Player.new(load(username))
@@ -42,7 +42,7 @@ end
 
 post "/create" do
   hash = {}
-  hash["username"] = params[:username]
+  hash["username"] = params[:username].downcase
   hash["password"] = params[:password]
   hash["re_enter"] = params[:re_enter]
   hash["name"]     = params[:name]
