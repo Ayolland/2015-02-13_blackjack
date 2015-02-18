@@ -1,11 +1,26 @@
 module CardOperations
 
+  # test_hand
+  # Generates a hand of nine random cards for display testing.
+  #
+  # Returns:
+  # Array - filled with card strings
+  
   def test_hand
     @shoe = Shoe.new
     hand =[]
     9.times { hand << @shoe.deal.to_s}
     hand
   end
+
+  # unicode
+  # Converts a card object or string into its HTML Unicode character.
+  #
+  # Parameters:
+  # card - Card object or string.
+  #
+  # Returns:
+  # String - HTML Unicode character.
 
   def unicode(card)
     suit, num = suit_num(card)
@@ -24,11 +39,29 @@ module CardOperations
     "&#x1F0" + suit_code + num_code
   end
   
+  # suit_num
+  # gets the one-letter suit string, and the number of card.
+  #
+  # Parameters:
+  # card - Card object or string.
+  #
+  # Returns:
+  # suit, num - both strings.
+  
   def suit_num(card)
     suit = card.to_s.split(//).first
     num  = card.to_s.delete(suit)
     return suit, num
   end
+  
+  # color
+  # gets the color of a card as a string.
+  #
+  # Parameters:
+  # card - Card object or string.
+  #
+  # Returns:
+  # string
   
   def color(card)
     suit, num = suit_num(card)

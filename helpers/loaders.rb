@@ -62,15 +62,28 @@ module LoadSaveGamePlayers
     DATABASE.execute(sql_str)[0] != nil
   end
   
-  # load(username)
+  # load
   # Pulls a user from the database by username.
   #
+  # Parameters:
+  # username - username value from database
   #
+  # Returns:
+  # Hash - options hash which can be used to initiate player object.
   
   def load(username)
     sql_str = "SELECT * FROM Users WHERE username = '#{username}'"
     DATABASE.execute(sql_str)[0]
   end
+  
+  # insert_hash
+  # Adds a user entry into database using a hash of attributes.
+  #
+  # Parameters:
+  # hash - options hash with player attributes
+  #
+  # Returns:
+  # Hash - same hash entered in.
   
   def insert_user(hash)
     key_str = hash.keys.join(", ")
