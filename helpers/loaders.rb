@@ -3,10 +3,22 @@ module LoadSaveGamePlayers
   #commenting this out becasue I believe this method is abandoned.... (correction, it's not...) #TODO refactor this crap...
   
   def load_pl_de
+    load_qualities
     session[:dealer] = Dealer.new({})
     session[:player] = Player.new(load(session[:username]))
+    session[:player].make_rich if session[:player].chips > 2000
   end
   
+  def load_qualities
+    sql_str = "SELECT * FROM Qualities"
+    session[:qualities] = DATABASE.execute(sql_str).each_with_object({}){
+      |entry, hash| hash[entry["id"]] = entry["name"]}
+  end
+  
+  def flush
+    DATABASE.execute("DELETE FROM UserQualities")
+  end
+ 
   # save_game_state
   # Clears the Dealer/Player tables, reloads them with each's hand. Also saves
   # the current bet and the users total chips.
@@ -20,17 +32,23 @@ module LoadSaveGamePlayers
   #TODO- make this save player qualities.
   
   def save_game_state
-    DATABASE.execute('DELETE FROM Dealer')
-    DATABASE.execute('DELETE FROM Player')
-    DATABASE.execute('DELETE FROM Bet')
-    session[:dealer].hand.each do |card|
-      DATABASE.execute("INSERT INTO Dealer (card) VALUES ('#{card.to_s}')")
+    #DATABASE.execute('DELETE FROM Dealer')
+    #DATABASE.execute('DELETE FROM Player')
+    #DATABASE.execute('DELETE FROM Bet')
+    #session[:dealer].hand.each do |card|
+    #  DATABASE.execute("INSERT INTO Dealer (card) VALUES ('#{card.to_s}')")
+    #end
+    #session[:player].hand.each do |card|
+    #  DATABASE.execute("INSERT INTO Player (card) VALUES ('#{card.to_s}')")
+    #end
+    #DATABASE.execute ("INSERT INTO Bet (bet) VALUES (#{session[:bet]})")
+    DATABASE.execute ("UPDATE Users SET chips=#{session[:player].chips} WHERE username = '#{session[:username]}'")
+    session[:player].qualities.each do |string|
+      quality_id = session[:qualities].invert[string]
+      user_id = session[:player].id
+      date = Time.now.to_i
+      DATABASE.execute ("INSERT INTO UserQualities (quality_id,user_id,date) VALUES (#{quality_id},#{user_id},#{date})")
     end
-    session[:player].hand.each do |card|
-      DATABASE.execute("INSERT INTO Player (card) VALUES ('#{card.to_s}')")
-    end
-    DATABASE.execute ("INSERT INTO Bet (bet) VALUES (#{session[:bet]})")
-    DATABASE.execute ("UPDATE Users SET chips=#{session[:player].chips} WHERE username = '#{session[:username]}'")    
   end
   
   # load_game_state
@@ -73,7 +91,13 @@ module LoadSaveGamePlayers
   
   def load(username)
     sql_str = "SELECT * FROM Users WHERE username = '#{username}'"
-    DATABASE.execute(sql_str)[0]
+    options = DATABASE.execute(sql_str)[0]
+    sql_str = "SELECT quality_id FROM UserQualities WHERE user_id = #{options["id"]}"
+    options["qualities"] = []
+    DATABASE.execute(sql_str).each do |hash|
+      options["qualities"] << session[:qualities][hash[0]]
+    end
+    options
   end
   
   # insert_hash

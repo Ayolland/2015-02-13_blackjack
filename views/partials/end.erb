@@ -1,4 +1,4 @@
 <tr>
-    <td><form method="post" action="/new_game/<%= session[:username] %>"><input type="submit" value="Play new hand."></form></td>
-    <td><form method="post" action="/logout"><input type="submit" value="Leave table and Logout."></form></td>
+    <td><form method="post" action="/new_game/<%= session[:username] %>"><button class='btn' type='submit' value='New'>New Hand</button></form></td>
+    <td><form method="post" action="/logout"><button class='btn' type='submit' value='Logout'>Logout</button></form></td>
 </tr>

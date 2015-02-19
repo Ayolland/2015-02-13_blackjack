@@ -1,5 +1,9 @@
 <tr>
-    <td><form method="post" action="/hit/<%= session[:username] %>"><input type="submit" value="Hit"></form></td>
-    <td><form method="post" action="/stand/<%= session[:username] %>"><input type="submit" value="Stand"></form></td>
-    <td><form method="post" action="/double/<%= session[:username] %>"><input type="submit" value="Double Down"></form></td>
+    <td><form method="post" action="/hit/<%= session[:username] %>"><button class='btn' type='submit' value='Hit'>Hit</button></form></td>
+    <td><form method="post" action="/stand/<%= session[:username] %>"><button class='btn' type='submit' value='Stand'>Stand</button></form></td>
+    <% if session[:player].chips >= session[:bet]%>
+    <td><form method="post" action="/double/<%= session[:username] %>"><button class='btn' type='submit' value='Dbl'>Double Down</button></form></td>
+    <%end%>
 </tr>
+
+<!--<input type="submit" value="Hit"> -->

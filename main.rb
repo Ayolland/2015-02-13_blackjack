@@ -14,6 +14,7 @@ require_relative 'helpers/cards'
 DATABASE = SQLite3::Database.new('database/database.db')
 require_relative "database/database_setup.rb"
 
+set :bind, '0.0.0.0'
 enable :sessions
 
 get "/test" do
@@ -73,7 +74,6 @@ get "/style_test" do
   @action = :choice
   session[:bet] = 10
   @printer =["Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."]
-  erb :test
   erb :blackjack
 end
 
@@ -87,7 +87,7 @@ end
 post "/first_deal/:username" do
   session[:username] = params[:username]
   session[:bet] = params[:bet].to_i
-  load_pl_de
+  session[:player].make_reckless if session[:bet] == session[:player].chips
   session[:player].chips -= session[:bet]
   first_deal
   save_game_state
@@ -96,8 +96,6 @@ end
 
 post "/hit/:username" do
   session[:username] = params[:username]
-  load_pl_de
-  session[:dealer].hand, session[:player].hand, session[:bet] = load_game_state
   hit
   save_game_state
   erb :blackjack
@@ -105,8 +103,6 @@ end
 
 post "/stand/:username" do
   session[:username] = params[:username]
-  load_pl_de
-  session[:dealer].hand, session[:player].hand, session[:bet] = load_game_state
   stand
   save_game_state
   erb :blackjack
@@ -114,8 +110,6 @@ end
 
 post "/double/:username" do
   session[:username] = params[:username]
-  load_pl_de
-  session[:dealer].hand, session[:player].hand, session[:bet] = load_game_state
   double
   save_game_state
   erb :blackjack

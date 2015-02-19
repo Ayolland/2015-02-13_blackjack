@@ -15,7 +15,7 @@ class Driver
     session[:player] = Player.new(self.intro)
     session[:dealer] = Dealer.new({:min => 5})
     load_qualities if session[:player].id != nil
-    binding.pry
+    
     @printer = []
     @printer << "Let's play BlackJack!"
     @printer << "No Hole card, 5 chip minimum bid."

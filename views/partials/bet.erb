@@ -1,3 +1,8 @@
 <tr>
-    <td><form action="/first_deal/<%= session[:username] %>" method="post"><input type="number" name="bet" min=5 max=<%= session[:player].chips %> value=5><br><input type="submit" value="Place Bet"></form></td>
+    <td>
+      <form action="/first_deal/<%= session[:username] %>" method="post">
+        <input type="number" name="bet" min=5 max=<%= session[:player].chips %> value=5><br>
+        <button class='btn' type='submit' value='Bet'>Place Bet</button>
+      </form>
+    </td>
 </tr>

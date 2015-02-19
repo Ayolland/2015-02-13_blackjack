@@ -17,10 +17,45 @@ class Player
     @username   = options["username"]
     @id         = options["id"]
   end
+  
+  def make_lucky
+    self.qualities << "lucky"
+  end
+  
+  def make_unlucky
+    self.qualities << "unlucky"
+  end
+  
+  def make_reckless
+    self.qualities << "reckless"
+  end
+  
+  def make_cheap
+    self.qualities << "cheap"
+  end
+  
+  def make_broke
+    self.qualities << "broke"
+  end
+  
+  def make_rich
+    self.qualities << "rich"
+  end
+  
+  def petname
+    names = ["#{@gender}. #{@name}"]
+    names.concat(["crazypants", "wild card","oh fearless one","big spender"]) if qualities.include?("reckless")
+    names.concat(["#{@gender}. Lucky", "lucky charms"]) if qualities.include?("lucky")
+    names.concat(["#{@gender}. Misfortune", "you poor sot"]) if qualities.include?("unlucky")
+    names.concat(["Scrooge", "stingy", ""]) if qualities.include?("cheap")
+    names.concat(["#{@gender}. Moneybags", "Playa", "Richy Rich"]) if qualities.include?("rich")
+    names.concat(["deadbeat", "you mooch", "ya bum"]) if qualities.include?("broke")
+    names.sample
+  end
 
   def save
     sql_str = "UPDATE Users SET chips=#{self.chips} WHERE username='#{self.username}'"
-    binding.pry
+    
     DATABASE.execute(sql_str)
     sql_str = "SELECT id FROM Users WHERE username = '#{self.username}'"
     user_id = DATABASE.execute(sql_str)[0]["id"]
@@ -31,7 +66,7 @@ class Player
       DATABASE.execute(sql_str)
     end
   end
-
+  
 end
 
 class Dealer

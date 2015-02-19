@@ -29,6 +29,7 @@ module BlackJackRules
   
   def first_deal
     @printer = []
+    
     deal_dealer
     de_total
     2.times {deal_player}
@@ -95,6 +96,7 @@ module BlackJackRules
   def double
     @printer = []
     @printer << "You double your bet and take one more card."
+    session[:player].make_reckless if session[:player].hand_total > 12
     session[:player].chips -= session[:bet]
     session[:bet] += session[:bet]
     deal_player
@@ -246,7 +248,10 @@ module BlackJackRules
   def pl_total
     @printer << "You have #{session[:player].hand_total}" if !session[:player].blackjack?
     @printer << "You bust." if session[:player].bust?
-    @printer << "BlackJack!" if session[:player].blackjack?
+    if session[:player].blackjack?
+      @printer << "BlackJack!" 
+      session[:player].make_lucky
+    end
     nil
   end
   
@@ -261,8 +266,11 @@ module BlackJackRules
   
   def de_total
     @printer << "Dealer has #{session[:dealer].hand_total}" if !session[:dealer].blackjack?
-    @printer << "Dealer busts!" if session[:dealer].bust?
-    @printer << "Dealer has BlackJack." if session[:dealer].blackjack?
+    @printer << "Dealer busts!" if session[:dealer].bust? 
+    if session[:dealer].blackjack?
+      @printer << "Dealer has BlackJack."
+      session[:player].make_unlucky
+    end
     nil
   end
   
