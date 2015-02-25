@@ -1,5 +1,6 @@
 get "/test" do
   @hand = test_hand
+  erb :'tests/test'
 end
 
 get "/style_test" do
