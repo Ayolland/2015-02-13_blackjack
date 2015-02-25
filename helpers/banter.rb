@@ -1,4 +1,13 @@
 module DealerBanter
+  
+  # chat
+  # Depending on the step of the game, returns a comment to be added to the end
+  # of the @printer array.
+  #
+  # Returns: nil
+  #
+  # State Changes:
+  # adds to @printer
 
   def chat
     if @action == :bet

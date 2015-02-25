@@ -1,5 +1,11 @@
 module LoadSaveGamePlayers
   
+  # no_input?
+  # tests to see if any of the new-user-creation forms were not filled out.
+  #
+  # Returns: Boolean
+  # TODO somehow move this into Player class...
+  
   def no_input?
     params[:username] == "" ||
     params[:password] == "" ||
@@ -8,19 +14,31 @@ module LoadSaveGamePlayers
     params[:gender] == ""
   end
   
+  # load_pl_de
+  # loads the player and dealer objects, may set the player as rich.
+  #
+  # Returns: nil
+  #
+  # State Changes:
+  # sets :dealer and :player in session, may add to session[:player].qualities.
+  # TODO Move this somewhere else...
+  
   def load_pl_de
     flush
-    #load_qualities
     session[:dealer] = Dealer.new({})
     session[:player] = Player.load(session[:username])
     session[:player].make_rich if session[:player].chips > 2000
   end
-  
-  def load_qualities
-    sql_str = "SELECT * FROM Qualities"
-    session[:qualities] = DATABASE.execute(sql_str).each_with_object({}){
-      |entry, hash| hash[entry["id"]] = entry["name"]}
-  end
+
+  #flush
+  # IS SUPPOSED TO clear out any qualities older than 100 seconds.
+  #
+  # Returns: nil
+  # 
+  # State Changes:
+  # modifies the UserQualities table in the database
+  # TODO 1. fix this mf
+  # TODO 2. Move into a Qualities class?
   
   def flush
     t = Time.now.to_i - 100
