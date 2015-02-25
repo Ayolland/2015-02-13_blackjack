@@ -1,7 +1,16 @@
-<h1>Dealer:</h1>
+<% if @error != nil %>
+<p class="error"><%= @error %></p>
+<% end%>
+<h2 class="felt">
+  Dealer Total: 
+  <strong class=<%="bad" if session[:dealer].bust?%>>
+    <%= session[:dealer].hand_total %>
+  </strong>
+</h2>
 <% @hand = session[:dealer].hand %>
 <%= erb "partials/cards".to_sym %>
-<h2>Dealer Total: <%= session[:dealer].hand_total %></h2>
+<p class="casino">Dealer must hit to 16 and stands on all 17s<br>
+BLACKJACK PAYS 3:2</p>
 <p class="printer">
 <% @printer.each {|string|%><%=string%><br><%}%>
 </p>
@@ -12,12 +21,17 @@
   <tr>
     <td> <h3>Current Bet: <strong>&#10026;<%= session[:bet] %></strong> </h3></td>
     <td>
-      <h1><%= session[:player].name %>:</h1>
+      <h1 class="casino"> <%= session[:player].name %> </h1>
     </td>
     <td><h3> Total Chips - <strong>&#10026;<%= session[:player].chips %></strong> </h3></td>
   </tr>
 </table>
 <% @hand = session[:player].hand %>
 <%= erb "partials/cards".to_sym %>
-<h2><%= session[:player].name %> Total: <%= session[:player].hand_total %></h2>
+<h2 class="felt">
+  <%= session[:player].name %> Total: 
+  <strong class=<%="bad" if session[:player].bust?%>>
+    <%= session[:player].hand_total %>
+  </strong>
+</h2>
 

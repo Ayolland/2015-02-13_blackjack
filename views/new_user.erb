@@ -1,14 +1,15 @@
 <% if @error != nil %>
 <p class="error"><%= @error %></p>
 <% end%>
-<h1>Create a new user:</h1>
+<h1 class="casino">Create a new user:</h1>
 <form action="/create" method="post" class="create">
   Username:<input type="text" name="username"><br>
   Password:<input type="password" name="password"><br>
   Re-Enter Password:<input type="password" name="re_enter"><br>
   Name:<input type="text" name="name"><br>
+  <br>
   Male <input type="radio" name="gender" value="Mr"><br>
   Female<input type="radio" name="gender" value="Ms"><br>
   Neutral<input type="radio" name="gender" value="Mx" checked><br><br>
-  <input class="center" type="submit" name="create" value="Create User">
+  <button class='btn center' type='submit' value='Create'>Create User</button>
 </form>

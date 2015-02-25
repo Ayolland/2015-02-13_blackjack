@@ -1,4 +1,4 @@
-<h1>Welcome back, <%= session[:player].gender %>. <%= session[:player].name %>.</h1>
+<h1>Welcome<%= " back" if @newuser != true %>, <%= session[:player].gender %>. <%= session[:player].name %>.</h1>
 <h2>Ready to play BlackJack?</h2>
 <form method="post" action="/new_game/<%= session[:username] %>">
   <button class='btn' type='submit' value='new'>New Game</button>

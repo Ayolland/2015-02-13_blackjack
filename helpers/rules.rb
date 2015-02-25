@@ -15,6 +15,16 @@ module BlackJackRules
     session[:dealer].hand = []
     session[:player].hand = []
     session[:bet] = 0
+    if session[:player].chips <= 0
+      @error = "You're bankrupt! The house loans you 200 chips."
+      session[:player].chips = 200
+      session[:player].qualities = []
+      session[:player].make_broke
+      @printer << "Playing responsibly, I see."
+    end
+    if session[:player].qualities.include?("rich")
+      @printer << "Always good to have you, #{session[:player].gender}. #{session[:player].name}." 
+    end
     chat
   end
   
@@ -29,7 +39,10 @@ module BlackJackRules
   
   def first_deal
     @printer = []
-    
+    if session[:player].chips == 0
+      @printer << "#{session[:player].gender}. #{session[:player].name} is all in!"
+      session[:player].make_reckless
+    end 
     deal_dealer
     de_total
     2.times {deal_player}

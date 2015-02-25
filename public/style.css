@@ -1,3 +1,8 @@
+@font-face {
+    font-family: casino;
+    src: url(FETTE___.ttf);
+}
+
 html {
     min-height: 100%
 }
@@ -18,16 +23,31 @@ body {
       
 }
 
+.casino{
+    font-family: casino;
+    font-weight: normal;
+    
+}
+
 h1{
-  color: white;
+  color: white; 
   line-height: 0.5;
   left-margin: 2;
   right-margin:2;
+
+}
+
+p.casino{
+  font-size: 16pt;
+  line-height: 0.9;
+  color: #96E096;
+  padding: 0;
 }
 
 h2{
   color: #96E096;
-  line-height: 0.5;
+  line-height: 0.9;
+  padding: 0;
 }
 
 h3{
@@ -56,6 +76,7 @@ table{
   border-collapse: separate;
   margin-left: auto;
   margin-right: auto;
+  padding: 0;
 }
 
 .printer{
@@ -99,6 +120,10 @@ td.cards{
 
 .black{
   color: black;
+}
+
+.bad {
+  color: maroon;
 }
 
 input{

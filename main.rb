@@ -28,8 +28,8 @@ end
 post "/verify" do
   username = params[:username].downcase
   password = params[:password]
-  if verify?(username,password) 
-    session[:player] = Player.new(load(username))
+  if Player.verify?(username,password) 
+    session[:player] = Player.load(username)
     session[:username] = username
     erb :landing
   else
@@ -43,32 +43,32 @@ post "/new_user" do
 end
 
 post "/create" do
-  hash = {}
-  hash["username"] = params[:username].downcase
-  hash["password"] = params[:password]
-  hash["re_enter"] = params[:re_enter]
-  hash["name"]     = params[:name]
-  hash["gender"]   = params[:gender]
-  hash["chips"]    = 500
-  exists = load(hash["username"])
-  if exists == nil && hash["password"] == hash["re_enter"]
-    insert_user(hash)
-    session[:player] = Player.new(load(hash["username"]))
-    session[:username] = hash["username"]
+  params["username"] = params[:username].downcase 
+  #all usernames are lowercase because forgetfulness
+  params["chips"]    = 500
+  #new users are given 500 chips
+  exists = Player.load(params["username"]) if !no_input?
+  if exists == nil && params["password"] == params["re_enter"] && !no_input?
+    session[:player] = Player.new(params)
+    session[:player].insert
+    session[:username] = params["username"]
+    @newuser = true
     erb :landing
+  elsif no_input?
+    @error = "Must fill out all the forms."
+    erb :new_user
   elsif exists != nil
     @error = "Sorry, that username is taken already."
     erb :new_user
-  elsif hash["password"] != hash["re_enter"]
+  elsif params["password"] != params["re_enter"]
     @error = "Sorry, that password did not match."
     erb :new_user
   end
 end
 
 get "/style_test" do
-  hash = load("cassiegurl")
-  hash["hand"] = test_hand
-  session[:player] = Player.new(hash)
+  session[:player] = Player.load("cassiegurl")
+  session[:player].hand = test_hand
   session[:dealer] = Dealer.new({"hand" => test_hand, "min" => 5})
   @hand = test_hand
   @action = :choice
@@ -78,40 +78,36 @@ get "/style_test" do
 end
 
 post "/new_game/:username" do
-  session[:username] = params[:username]
   load_pl_de
   new_game
   erb :blackjack
 end
 
 post "/first_deal/:username" do
-  session[:username] = params[:username]
   session[:bet] = params[:bet].to_i
   session[:player].make_reckless if session[:bet] == session[:player].chips
   session[:player].chips -= session[:bet]
   first_deal
-  save_game_state
+  session[:player].save
   erb :blackjack
 end
 
 post "/hit/:username" do
-  session[:username] = params[:username]
   hit
-  save_game_state
+  session[:player].save
   erb :blackjack
 end
 
 post "/stand/:username" do
-  session[:username] = params[:username]
   stand
-  save_game_state
+  session[:player].save
   erb :blackjack
 end
 
 post "/double/:username" do
   session[:username] = params[:username]
   double
-  save_game_state
+  session[:player].save
   erb :blackjack
 end
 
