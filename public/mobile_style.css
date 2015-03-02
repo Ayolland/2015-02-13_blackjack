@@ -24,22 +24,11 @@ body {
       
 }
 
-div.login{
-  margin: 20px;
-  margin-top: 15%;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-div.new_user{
-  margin-top: 5%;
-}
-
 div.hand{
   background-color: #27760E;
   position: fixed;
   width: 100%;
+  height: 120px;
   overflow: hidden;
 }
 
@@ -50,7 +39,7 @@ div.play_area{
 }
 
 div.card_array{
-  height: 62px;
+  height: 82px;
   width: 100%;
   overflow: scroll;
   position: relative;
@@ -59,14 +48,12 @@ div.card_array{
 
 div.hand.top{
   top: 0px;
-  height: 135px;
-  border-bottom: 4px double white;
+  border-bottom: 3px double white;
 }
 
 div.hand.bottom{
   bottom: 0px;
-  height: 145px;
-  border-top: 4px double white;
+  border-top: 3px double white;
 }
 
 div.hand.bottom div.card_array{
@@ -75,86 +62,77 @@ div.hand.bottom div.card_array{
 
 div.padder{
   height: 100%;
-  padding-top: 135px;
-  padding-bottom: 145px;
+  padding-top:120px;
+  padding-bottom:120px;
 }
 
 div.player_stats {
 max-width: 600px;
 width: 95%;
+height: 91px;
 margin-left: auto;
 margin-right: auto;
 }
 
 div.stat_box {
 float: left;
-width: 50%;
-/* margin-top: 4px; */
-
+position: relative;
+margin-bottom: 20px;
 }
 
 div.player_name {
-float: left;
-height: 100px;
-width: 50%;
-margin-top: 40px;
+position: relative;
+top: 35%;
+margin-top: auto;
 }
 
 .clickypoo{
  display: inline-block;
- margin: 3px;
- /* width: 100%; */
+ margin-bottom: 5px;
+}
+
+.casino{
+    font-family: casino;
+    font-weight: normal;
+    
 }
 
 h1{
   color: white; 
-  line-height: 0.9;
-}
+  line-height: 0.5;
+  left-margin: 2;
+  right-margin:2;
 
-.casino{
-  font-style: oblique;
-  margin: 0;
-}
-
-h1.casino{
-  margin: 5px;
 }
 
 p.casino{
-  font-size: 16px;
-  font-family: sans-serif;
+  font-size: 16pt;
+  line-height: 0.9;
   color: #96E096;
-  /* padding: 0; */
-  position: relative;
-  margin: 0;
-  /* top: -4px; */
-}
-
-p.spacer {
-visibility: hidden;
-font-size: 0;
-height: 25px;
+  padding: 0;
 }
 
 h2{
   color: #96E096;
-  font-size: 20px;
-  /* padding: 4px; */
+  line-height: 0.9;
+  padding: 4px;
   margin: 0px;
   position: relative;
-  /* margin-top: 6px; */
+  top: 6px;
 }
 
 h3{
-  margin: 0;
-  color: #96E096;
+  background: #52BC52;
+  padding: .2em;
+  border: 5px double white;
+  margin: 5px;
 }
 
 strong{
   color: white;
   text-align: justify;
-  font-size: x-large;
-  vertical-align: -7%;
+  font-size: 20pt;
+  vertical-align: -10%;
 }
 
 
@@ -176,6 +154,7 @@ table{
 .printer{
   font-size: 9pts;
   background: #52BC52;
+  width: 90%;
   max-width: 30em;
   margin-left: auto;
   margin-right: auto;
@@ -188,11 +167,12 @@ table{
   background: -ms-linear-gradient(top,  rgba(150,224,150,1) 0%,rgba(82,188,82,1) 100%); /* IE10+ */
   background: linear-gradient(to bottom,  rgba(150,224,150,1) 0%,rgba(82,188,82,1) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#96e096', endColorstr='#52bc52',GradientType=0 ); /* IE6-9 */
+  
 }
 
 p.cards{
-  height: 55px;
-  width: 45px;
+  height: 72px;
+  width: 55px;
   background: white;
   border: 1px solid #DDCB8D;
   margin: 2px;
@@ -205,25 +185,21 @@ p.cards{
   background: -ms-linear-gradient(45deg,  rgba(229,225,167,1) 0%,rgba(242,237,218,1) 29%,rgba(255,255,255,1) 55%); /* IE10+ */
   background: linear-gradient(45deg,  rgba(229,225,167,1) 0%,rgba(242,237,218,1) 29%,rgba(255,255,255,1) 55%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e1a7', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  
 }
 
 p.unicode_symb{
-  /* height: 55px; */
-  font-size: 60px;
-  /* width: 45px; */
+  font-size: 80px;
   vertical-align: bottom;
-  line-height: 1.07;
+  line-height: 1.05;
 }
 
 p.card_text{
   font-size: 26px;
-  /* height: 55px; */
-  /* width: 45px; */
-  postion: relative;
   align: left;
-  /* vertical-align: middle; */
-  /* text-align: center; */
-  line-height: 2;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 2.7;
 }
 
 .red{
@@ -239,7 +215,7 @@ p.card_text{
 }
 
 input{
-  /* width: 100%; */
+  width: 15em;
   border: 5px double #27760E;
   font-size: 16pt;
 }
@@ -261,6 +237,13 @@ input{
 .btn:hover {
   background: #137313;
   text-decoration: none;
+}
+
+.login{
+  width: 25%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .create{

@@ -1,6 +1,7 @@
-<table>
-  <tr><% @hand.each do |card|%> 
-    <td class="cards <%= color(card) %>"><%= unicode(card) %></td>
-    <%end%>
-  </tr>
-</table>
+<% @hand.each do |card|%> 
+  <% if session[:switch] == "symbol" %>
+    <p class="unicode_symb cards <%= color(card) %>"><%= unicode(card) %></p>
+  <% else %>
+    <p class="card_text cards <%= color(card) %>"><%= card.to_s %></p>
+  <% end%>
+<%end%>

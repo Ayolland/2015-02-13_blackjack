@@ -9,6 +9,7 @@ post "/verify" do
   if Player.verify?(username,password) 
     session[:player] = Player.load(username)
     session[:username] = username
+    set_example_card
     erb :'users/landing'
   else
     @error = "Sorry, that username and password don't match!"
@@ -31,6 +32,7 @@ post "/create" do
     session[:player].insert
     session[:username] = params["username"]
     @newuser = true
+    set_example_card
     erb :'users/landing'
   elsif no_input?
     @error = "Must fill out all the forms."
@@ -47,4 +49,14 @@ end
 post "/logout" do
   @error = "Thanks for playing and come back soon!"
   erb :'users/login'
+end
+
+post "/use_symbols" do
+  session[:switch] = "symbol"
+  redirect "/new_game", 307
+end
+
+post "/use_text" do
+  session[:switch] = "text"
+  redirect "/new_game", 307
 end

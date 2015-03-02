@@ -1,10 +1,10 @@
-post "/new_game/:username" do
+post "/new_game" do
   load_pl_de
   new_game
   erb :'game/blackjack'
 end
 
-post "/first_deal/:username" do
+post "/first_deal" do
   session[:bet] = params[:bet].to_i
   session[:player].make_reckless if session[:bet] == session[:player].chips
   session[:player].chips -= session[:bet]
@@ -13,20 +13,19 @@ post "/first_deal/:username" do
   erb :'game/blackjack'
 end
 
-post "/hit/:username" do
+post "/hit" do
   hit
   session[:player].save
   erb :'game/blackjack'
 end
 
-post "/stand/:username" do
+post "/stand" do
   stand
   session[:player].save
   erb :'game/blackjack'
 end
 
-post "/double/:username" do
-  session[:username] = params[:username]
+post "/double" do
   double
   session[:player].save
   erb :'game/blackjack'

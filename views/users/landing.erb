@@ -1,5 +1,25 @@
 <h1>Welcome<%= " back" if @newuser != true %>, <%= session[:player].gender %>. <%= session[:player].name %>.</h1>
 <h2>Ready to play BlackJack?</h2>
-<form method="post" action="/new_game/<%= session[:username] %>">
-  <button class='btn' type='submit' value='new'>New Game</button>
-</form>
+<h3>Choose your display style:</h3>
+
+<div class="select_symbol">
+  <div class="card_array">
+    <% session[:switch] = "symbol" %>
+    <%= erb "partials/cards".to_sym %>
+  </div>
+  <h3>Can you see a playing card above?</h3>
+  <form class="clickypoo" method="post" action="/use_symbols">
+    <button class='btn' type='submit' value='new'>Use Cards</button>
+  </form>
+</div>
+
+<div class="select_text">
+  <div class="card_array">
+    <% session[:switch] = "text" %>
+    <%= erb "partials/cards".to_sym %>
+  </div>
+  <h3>If not, use text for cards.</h3>
+  <form class="clickypoo" method="post" action="/use_text">
+    <button class='btn' type='submit' value='new'>Use Text</button>
+  </form>
+</div>

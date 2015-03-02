@@ -12,6 +12,10 @@ module CardOperations
     9.times { hand << @shoe.deal.to_s}
     hand
   end
+  
+  def set_example_card
+    @hand = [] << Shoe.new.deal.to_s
+  end
 
   # unicode
   # Converts a card object or string into its HTML Unicode character.
