@@ -1,290 +1,148 @@
-@font-face {
-    font-family: casino;
-    src: url(FETTE___.ttf);
-}
-
-html {
-    min-height: 100%
-}
 body {
-  margin: 0px;
-  background-color: #27760E;
+  background: red;
+  margin: 0;
+}
+
+div.splash {
+  background: url(images/banner-image-11.jpg);
+  background-size: cover;
+  width: 100%;
   text-align: center;
-  height: 100%;
-  background-repeat: no-repeat;
-  background: rgb(82,188,82); /* Old browsers */
-  background: -moz-radial-gradient(center, ellipse cover,  rgba(82,188,82,1) 0%, rgba(23,119,23,1) 100%); /* FF3.6+ */
-  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(82,188,82,1)), color-stop(100%,rgba(23,119,23,1))); /* Chrome,Safari4+ */
-  background: -webkit-radial-gradient(center, ellipse cover,  rgba(82,188,82,1) 0%,rgba(23,119,23,1) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-radial-gradient(center, ellipse cover,  rgba(82,188,82,1) 0%,rgba(23,119,23,1) 100%); /* Opera 12+ */
-  background: -ms-radial-gradient(center, ellipse cover,  rgba(82,188,82,1) 0%,rgba(23,119,23,1) 100%); /* IE10+ */
-  background: radial-gradient(ellipse at center,  rgba(82,188,82,1) 0%,rgba(23,119,23,1) 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#52bc52', endColorstr='#177717',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-  
-      
+  margin: 0;
 }
 
-div.login{
-  margin: 20px;
-  margin-top: 15%;
-  margin-left: auto;
-  margin-right: auto;
+div.callouts{
   text-align: center;
+  width:100%;
+  background: url(images/cb-bg-1.jpg);
+  padding: 15px;
 }
 
-div.new_user{
-  margin-top: 5%;
+footer{
+  background: black;
+  padding-left: 30px;
+  padding-right: 30px;
+  height: 190px;
 }
 
-div.hand{
-  background-color: #27760E;
-  position: fixed;
-  width: 100%;
-  overflow: hidden;
+nav.top_nav {
+height: 40px;
 }
 
-div.play_area{
-  width: 100%;
-  top: 120px;
-  overflow: scroll;
-}
-
-div.card_array{
-  height: 62px;
-  width: 100%;
-  overflow: scroll;
-  position: relative;
-  white-space: nowrap;
-}
-
-div.hand.top{
-  top: 0px;
-  height: 135px;
-  border-bottom: 4px double white;
-}
-
-div.hand.bottom{
-  bottom: 0px;
-  height: 145px;
-  border-top: 4px double white;
-}
-
-div.hand.bottom div.card_array{
-    top: 2px;
-}
-
-div.padder{
-  height: 100%;
-  padding-top: 135px;
-  padding-bottom: 145px;
-}
-
-div.player_stats {
-max-width: 600px;
-width: 95%;
-margin-left: auto;
-margin-right: auto;
-}
-
-div.stat_box {
-float: left;
-width: 50%;
-/* margin-top: 4px; */
-
-}
-
-div.player_name {
-float: left;
-height: 100px;
-width: 50%;
-margin-top: 40px;
-}
-
-.clickypoo{
- display: inline-block;
- margin: 3px;
- /* width: 100%; */
-}
-
-h1{
-  color: white; 
-  line-height: 0.9;
-}
-
-.casino{
-  font-style: oblique;
-  margin: 0;
-}
-
-h1.casino{
-  margin: 5px;
-}
-
-p.casino{
-  font-size: 16px;
-  font-family: sans-serif;
-  color: #96E096;
-  /* padding: 0; */
-  position: relative;
-  margin: 0;
-  /* top: -4px; */
-}
-
-p.spacer {
-visibility: hidden;
-font-size: 0;
-height: 25px;
-}
-
-h2{
-  color: #96E096;
-  font-size: 20px;
-  /* padding: 4px; */
-  margin: 0px;
-  position: relative;
-  /* margin-top: 6px; */
-}
-
-h3{
-  margin: 0;
-  color: #96E096;
-}
-
-strong{
-  color: white;
-  text-align: justify;
-  font-size: x-large;
-  vertical-align: -7%;
-}
-
-
-.player{
-}
-
-.player td{
-  width: 15em;
-}
-
-table{
-  align: center;
-  border-collapse: separate;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0;
-}
-
-.printer{
-  font-size: 9pts;
-  background: #52BC52;
-  max-width: 30em;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 1em;
-  border: 5px double #27760E;
-  background: -moz-linear-gradient(top,  rgba(150,224,150,1) 0%, rgba(82,188,82,1) 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(150,224,150,1)), color-stop(100%,rgba(82,188,82,1))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  rgba(150,224,150,1) 0%,rgba(82,188,82,1) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  rgba(150,224,150,1) 0%,rgba(82,188,82,1) 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  rgba(150,224,150,1) 0%,rgba(82,188,82,1) 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  rgba(150,224,150,1) 0%,rgba(82,188,82,1) 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#96e096', endColorstr='#52bc52',GradientType=0 ); /* IE6-9 */
-}
-
-p.cards{
-  height: 55px;
-  width: 45px;
-  background: white;
-  border: 1px solid #DDCB8D;
-  margin: 2px;
+.center.nav_icon{
+  background: black;
   display: inline-block;
-  box-shadow: 4px 5px 3px DarkGreen;
-  background: -moz-linear-gradient(45deg,  rgba(229,225,167,1) 0%, rgba(242,237,218,1) 29%, rgba(255,255,255,1) 55%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(229,225,167,1)), color-stop(29%,rgba(242,237,218,1)), color-stop(55%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(45deg,  rgba(229,225,167,1) 0%,rgba(242,237,218,1) 29%,rgba(255,255,255,1) 55%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(45deg,  rgba(229,225,167,1) 0%,rgba(242,237,218,1) 29%,rgba(255,255,255,1) 55%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(45deg,  rgba(229,225,167,1) 0%,rgba(242,237,218,1) 29%,rgba(255,255,255,1) 55%); /* IE10+ */
-  background: linear-gradient(45deg,  rgba(229,225,167,1) 0%,rgba(242,237,218,1) 29%,rgba(255,255,255,1) 55%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e5e1a7', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  width: 68%;
+  padding-left: 5%;
+  padding-right: 5%;
+  border-left: 1px solid #BDBDBD;
+  border-right: 1px solid #BDBDBD;
+  margin-top: 5px;
 }
 
-p.unicode_symb{
-  /* height: 55px; */
-  font-size: 60px;
-  /* width: 45px; */
-  vertical-align: bottom;
-  line-height: 1.07;
+.right.nav_icon {
+  background: black;
+  width: 10%;
+  display: inline-block;
 }
 
-p.card_text{
-  font-size: 26px;
-  /* height: 55px; */
-  /* width: 45px; */
-  postion: relative;
-  align: left;
-  /* vertical-align: middle; */
-  /* text-align: center; */
-  line-height: 2;
+.left.nav_icon {
+  background: black;
+  width: 10%;
+  display: inline-block;
 }
 
-.red{
-  color: red;
+.nav_icon{
+  text-align: center;
+  vertical-align: middle;
 }
 
-.black{
-  color: black;
+.white {
+color: white;
+font-family: sans-serif;
 }
 
-.bad {
+.pretty{
+  width: 100%;
+  font-size: 26pt;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pretty.line1{
+  font-family: cursive;
+  line-height: 0.9;
+  padding-top: 30px;
+  font-size: 32pt;
+}
+
+.pretty.line2{
+  font-family: sans-serif;
+  letter-spacing: 4;
+  text-transform: uppercase;
+}
+
+.pretty.line3{
+  font-family: sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding-bottom: 15px;
+  letter-spacing: 2.5;
+}
+
+.so_cool{
   color: white;
+  font-family: sans-serif;
+  letter-spacing: 2.5;
+  text-transform: uppercase;
 }
 
-input{
-  /* width: 100%; */
-  border: 5px double #27760E;
-  font-size: 16pt;
-}
-
-.btn {
-  -webkit-border-radius: 40;
-  -moz-border-radius: 40;
-  width: 9em;
-  border-radius: 40px;
-  font-family: Georgia;
-  color: #ffffff;
-  font-size: 20px;
-  background: #6CCB6C;
-  padding: 10px 20px 10px 20px;
-  border: dotted #ffffff 3px;
-  text-decoration: none;
-}
-
-.btn:hover {
-  background: #137313;
-  text-decoration: none;
-}
-
-.create{
-  background: #52BC52;
-  width: 350px;
-  padding: 1em;
+.big_black{
   margin-left: auto;
   margin-right: auto;
-  text-align: right;
+  margin-bottom: 15px;
+  width:248px;
+  font-size: normal;
+  padding: 16px;
+  color: white;
+  background: black;
+  font-size: 16px;
+  border: none;
 }
 
-.center{
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+img.callout{
+  margin: 15px;
 }
 
-.error{
-  width: 50%;
-  font-style: italic;
-  font-weight: 600;
-  background: #52BC52;
-  padding: .5em;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+.rounded{
+  border-radius: 7px;
+}
+
+.spacer{
+  clear: both;
+}
+
+.social_icon{
+  float: right;
+}
+
+.compliance{
+  float: left;
+  margin-top: 15px;
+}
+
+p.copyright {
+text-align: right;
+margin: 0;
+}
+
+li.white {
+list-style-type: none;
+font-family: sans-serif;
+display: inline-block;
+font-size: 9pt;
+float: right;
+margin: 7px;
+margin-bottom: 20px;
 }
